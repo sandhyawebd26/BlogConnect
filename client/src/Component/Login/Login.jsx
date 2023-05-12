@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
@@ -7,41 +7,51 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState({
-    email: "",
+  const [data, setData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-    password: "",
-  });
-
-  let name, value;
-  const handleInputs = (e) => {
-    console.log(e);
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+  const handleInputChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+    setErrors({}); // Clear any previous errors when the input changes
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    console.log(data.name, data.email, data.contact, data.password);
-    axios
-      .post("http://localhost:4000/api/auth/register", {
-        fullname: data.name,
-        email: data.email,
-        contact: data.contact,
-        password: data.password,
-      })
-      .then((res) => {
-        console.log(res.data);
-        navigate("/");
+  const validateForm = () => {
+    const errors = {};
 
-        alert("success");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("service error");
-      });
+    if (!data.email.trim()) {
+      errors.email = "Email is required";
+    }
+
+    if (!data.password.trim()) {
+      errors.password = "Password is required";
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
+
+  const handleLogin = () => {
+    if (validateForm()) {
+      setIsLoading(true);
+
+      axios
+        .post("/login", data)
+        .then((response) => {
+          console.log(response.data.message); // Display the server response
+          navigate("/dashboard"); // Navigate to the dashboard after successful login
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setErrors({ server: "An error occurred. Please try again." });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -70,23 +80,49 @@ function Login() {
                   <h4>Account Login</h4>
                 </div>
                 <div className="card-body">
-                  <form action="index.html">
+                  {errors.server && (
+                    <div className="alert alert-danger">{errors.server}</div>
+                  )}
+                  <form>
                     <div className="form-group">
                       <label htmlFor="email">Email</label>
-                      <input type="text" className="form-control" />
+                      <input
+                        type="text"
+                        name="email"
+                        value={data.email}
+                        onChange={handleInputChange}
+                        className={`form-control ${
+                          errors.email ? "is-invalid" : ""
+                        }`}
+                      />
+                      {errors.email && (
+                        <div className="invalid-feedback">{errors.email}</div>
+                      )}
                     </div>
                     <div className="form-group">
                       <label htmlFor="password">Password</label>
-                      <input type="password" className="form-control" />
+                      <input
+                        type="password"
+                        name="password"
+                        value={data.password}
+                        onChange={handleInputChange}
+                        className={`form-control ${
+                          errors.password ? "is-invalid" : ""
+                        }`}
+                      />
+                      {errors.password && (
+                        <div className="invalid-feedback">
+                          {errors.password}
+                        </div>
+                      )}
                     </div>
-
                     <button
-                      type="submit"
-                      value="Login"
-                      className="btn btn-primary btn-block"
+                      type="button"
                       onClick={handleLogin}
+                      disabled={isLoading}
+                      class="btn btn-primary btn-block"
                     >
-                      Login
+                      {isLoading ? "Logging in..." : "Login"}
                     </button>
                   </form>
                 </div>
