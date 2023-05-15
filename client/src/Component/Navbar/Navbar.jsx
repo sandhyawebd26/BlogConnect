@@ -1,7 +1,13 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const handleOptionClick = (path) => {
+    navigate(path);
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-0">
@@ -25,17 +31,29 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item px-2">
-                <NavLink className="nav-link" to="/Posts" activeClassName="active">
+                <NavLink
+                  className="nav-link"
+                  to="/Posts"
+                  activeClassName="active"
+                >
                   Posts
                 </NavLink>
               </li>
               <li className="nav-item px-2">
-                <NavLink className="nav-link" to="/Categories" activeClassName="active">
+                <NavLink
+                  className="nav-link"
+                  to="/Categories"
+                  activeClassName="active"
+                >
                   Categories
                 </NavLink>
               </li>
               <li className="nav-item px-2">
-                <NavLink className="nav-link" to="/Users" activeClassName="active">
+                <NavLink
+                  className="nav-link"
+                  to="/Users"
+                  activeClassName="active"
+                >
                   Users
                 </NavLink>
               </li>
@@ -53,16 +71,13 @@ function Navbar() {
                   <NavLink className="dropdown-item" to="/Profile">
                     <i className="fas fa-user-circle"></i> Profile
                   </NavLink>
-                  <NavLink
-                    className="dropdown-item"
-                    to="/Settings"
-                  >
+                  <NavLink className="dropdown-item" to="/Settings">
                     <i className="fas fa-cog"></i> Settings
                   </NavLink>
                 </div>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link"   to="/Login">
+                <NavLink className="nav-link" to="/Login">
                   <i className="fas fa-user-times"></i> Logout
                 </NavLink>
               </li>

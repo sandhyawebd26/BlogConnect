@@ -1,15 +1,6 @@
-const mongoose = require("mongoose");
+// sandhyaginare
 
-module.exports = () => {
-	const connectionParams = {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	};
-	try {
-		mongoose.connect(process.env.DB, connectionParams);
-		console.log("Connected to database successfully");
-	} catch (error) {
-		console.log(error);
-		console.log("Could not connect database!");
-	}
-};
+// F6WDbpyfoU1XjH91
+
+
+// mongodb+srv://sandhyaginare:F6WDbpyfoU1XjH91@cluster0.3x70kwl.mongodb.net/Blogweb?retryWrites=true&w=majority

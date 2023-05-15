@@ -4,8 +4,12 @@ import Posts from './Component/Posts/Posts';
 import Categories from './Component/Categories/Categories.jsx';
 import Users from './Component/Users/Users';
 import Login from './Component/Login/Login';
-import Welcome from './Component/Welcome/Welcome';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Profile from './Component/Welcome/Profile/Profile';
+import Settings from './Component/Welcome/Setings/Settings';
+
+import Details from './Component/Posts/Details';
+
 
 function App() {
   return (
@@ -16,7 +20,13 @@ function App() {
         <Route path="/Categories" element={<Categories />} />
         <Route path="/Users" element={<Users />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/Welcome" element={<Welcome />} />
+        <Route path="/Profile" element={<Profile />} />
+
+        <Route path="/Details" element={<Details />} />
+
+
+        <Route path="/Settings" element={<Settings />} />
+
       </Routes>
 
     </BrowserRouter>

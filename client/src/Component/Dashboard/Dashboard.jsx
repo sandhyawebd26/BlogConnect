@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import Posts from "../Posts/Posts";
+import Popup from "./Popup";
+import Popup1 from "./Popup1";
+import Popup2 from "./Popup2";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   return (
@@ -31,8 +34,9 @@ function Dashboard() {
               >
                 <i className="fas fa-plus"></i> Add Post
               </a>
+              <Popup />
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 ">
               <a
                 href="#"
                 className="btn btn-success btn-block"
@@ -41,6 +45,7 @@ function Dashboard() {
               >
                 <i className="fas fa-plus"></i> Add Category
               </a>
+              <Popup1 />
             </div>
             <div className="col-md-3">
               <a
@@ -51,6 +56,7 @@ function Dashboard() {
               >
                 <i className="fas fa-plus"></i> Add User
               </a>
+              <Popup2 />
             </div>
           </div>
         </div>
@@ -153,9 +159,13 @@ function Dashboard() {
                   <h4 className="display-4">
                     <i className="fas fa-pencil-alt"></i> 6
                   </h4>
-                  <a href="posts.html" className="btn btn-outline-light btn-sm">
+
+                  <Link
+                    to="/Posts"
+                    className="btn btn-outline-light btn-sm"
+                  >
                     View
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -165,12 +175,13 @@ function Dashboard() {
                   <h4 className="display-4">
                     <i className="fas fa-folder"></i> 4
                   </h4>
-                  <a
-                    href="categories.html"
+                  <Link
+                    to="/Categories"
                     className="btn btn-outline-light btn-sm"
                   >
                     View
-                  </a>
+                  </Link>
+                
                 </div>
               </div>
 
@@ -180,9 +191,12 @@ function Dashboard() {
                   <h4 className="display-4">
                     <i className="fas fa-users"></i> 4
                   </h4>
-                  <a href="users.html" className="btn btn-outline-light btn-sm">
+                  <Link
+                    to="/Users"
+                    className="btn btn-outline-light btn-sm"
+                  >
                     View
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

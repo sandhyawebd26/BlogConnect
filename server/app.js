@@ -1,29 +1,25 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const express = require("express");
-const auth = require("./routes/auth");
-const http = require("http");
+const express = require('express');
+const bodyParser = require('body-parser');
+const connectDB = require('./db/connect');
+const blogRoutes = require('./Routes/blogRoutes');
+const auth = require("./Routes/Auth");
+const adminRoute = require('./Routes/adminRoute')
+
 const app = express();
-const server = http.createServer(app);
 
-dotenv.config({ path: "./config.env" });
-console.log("Database connected successfully", process.env.DB_CONNECTION);
+// Connect to MongoDB
+connectDB();
 
-mongoose.connect(Dburl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "Database connection error: "));
-db.once("open", function () {
-    console.log("Database connected successfully");
-});
-
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use("/api/auth", auth);
+//User route
+app.use("/api/v1/auth", auth);
+// Blog routes
+app.use('/api/v1/blogs', blogRoutes);
+//Admin route
+app.use('/api/v1', adminRoute);
 
-server.listen(4000, () => {
-    console.log(`Port is running at 5000`);
+app.listen(4000, () => {
+    console.log("Server started at port 4000");
 });

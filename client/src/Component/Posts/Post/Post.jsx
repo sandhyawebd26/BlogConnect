@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Post() {
   return (
@@ -60,9 +61,9 @@ function Post() {
                       <td>Web Development</td>
                       <td>May 10 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -71,9 +72,9 @@ function Post() {
                       <td>Tech Gadgets</td>
                       <td>May 11 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -82,9 +83,9 @@ function Post() {
                       <td>Web Development</td>
                       <td>May 13 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -93,9 +94,9 @@ function Post() {
                       <td>Business</td>
                       <td>May 15 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -104,9 +105,9 @@ function Post() {
                       <td>Web Development</td>
                       <td>May 17 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                     <tr>
@@ -115,9 +116,9 @@ function Post() {
                       <td>Health & Wellness</td>
                       <td>May 20 2018</td>
                       <td>
-                        <a href="details.html" className="btn btn-secondary">
+                        <Link className="btn btn-secondary" to="/Details">
                           <i className="fas fa-angle-double-right"></i> Details
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   </tbody>

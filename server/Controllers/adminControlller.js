@@ -1,12 +1,12 @@
-const { User } = require("../../Models/user");
-const bcrypt = require("bcryptjs");
-const generateAuthToken = require("../../Shared/generateAuthToken");
+const Admin = require('../Models/admin');
+const bcrypt = require("bcryptjs")
+const generateAuthToken = require("../Shared/generateAuthToken");
 
-const postLogin = async (req, res) => {
+const postAdmin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email: email.toLowerCase() });
+        const user = await Admin.findOne({ email: email.toLowerCase() });
 
         if (user && (await bcrypt.compare(password, user.password))) {
             const token = generateAuthToken(user);
@@ -18,7 +18,4 @@ const postLogin = async (req, res) => {
     }
 };
 
-module.exports = postLogin;
-
-
-
+module.exports = postAdmin;

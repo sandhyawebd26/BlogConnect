@@ -37,9 +37,13 @@ function Login() {
       setIsLoading(true);
 
       axios
-        .post("/login", data)
-        .then((response) => {
-          console.log(response.data.message); // Display the server response
+        .post("http://localhost:5000/api/auth/register", {
+          data,
+        })
+        console.log(data.email, data.password)
+        .then((res) => {
+          console.log(res.data.message); // Display the server res
+          console.log(res.data.email);
           navigate("/dashboard"); // Navigate to the dashboard after successful login
         })
         .catch((error) => {
