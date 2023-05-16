@@ -13,7 +13,6 @@ import { Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 // import { Link } from "react-router-dom";
 
 export default function SignInSide() {
@@ -26,23 +25,23 @@ export default function SignInSide() {
     const password = formData.get("password");
 
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/auth/login",
+        {
+          email,
+          password,
+        }
+      );
       console.log(response.data);
       // Handle successful login response
 
       // Navigate to home page
       navigate("/");
-
     } catch (error) {
       console.error(error);
       // Handle error response
     }
   };
-
-
 
   return (
     <Container component="main" maxWidth="lg">
