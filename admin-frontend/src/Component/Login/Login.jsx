@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-
   const [data, setData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -35,16 +34,14 @@ function Login() {
   const handleLogin = () => {
     if (validateForm()) {
       setIsLoading(true);
-
+  
       axios
-        .post("http://localhost:5000/api/auth/register", {
-          data,
-        })
-        console.log(data.email, data.password)
+        .post("http://localhost:4000/api/v1/admin", data)
         .then((res) => {
-          console.log(res.data.message); // Display the server res
-          console.log(res.data.email);
-          navigate("/dashboard"); // Navigate to the dashboard after successful login
+          console.log(res)
+          console.log(res.data.user.password); // Display the server response
+          console.log(res.data.user.email);
+          navigate("/"); // Navigate to the dashboard after successful login
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -55,6 +52,7 @@ function Login() {
         });
     }
   };
+  
 
   return (
     <div>

@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const generateAuthToken = require("../../Shared/generateAuthToken.js")
 const postRegister = async (req, res) => {
   try {
-    const { fullname, email, password, contact } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -15,10 +15,10 @@ const postRegister = async (req, res) => {
     const encryptPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      fullname,
+      name,
       email: email.toLowerCase(),
       password: encryptPassword,
-      contact
+      confirmPassword: encryptPassword
     });
 
     const token = generateAuthToken(user);

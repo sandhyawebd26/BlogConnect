@@ -1,0 +1,24 @@
+.carTitle{
+text-align: center;
+}
+.title{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.star{
+    /* background-color: yellow; */
+   width: 100px;
+   height: 50px;
+   margin-left: 40%;
+}
+.details{
+    display: flex;
+    align-items: center;
+}
+
+.price{
+    margin-top: 10px;
+    margin-left: 15px;
+}
