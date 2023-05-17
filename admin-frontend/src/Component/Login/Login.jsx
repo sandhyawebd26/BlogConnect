@@ -34,7 +34,7 @@ function Login() {
   const handleLogin = () => {
     if (validateForm()) {
       setIsLoading(true);
-  
+
       axios
         .post("http://localhost:4000/api/v1/admin", data)
         .then((res) => {
