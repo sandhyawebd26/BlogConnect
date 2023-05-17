@@ -1,32 +1,40 @@
-const express = require("express");
-const router = express.Router();
-const Joi = require("joi");
-const validator = require("express-joi-validation").createValidator({});
-const authController = require("../Controllers/Auth/authController");
+const router = require("express").Router();
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
-const registerSchema = Joi.object({
-  email: Joi.string().email().required().label("email"),
-  password: Joi.string().min(3).max(15).required().label("password"),
-  name: Joi.string().required().label("fullname"),
-  confirmPassword: Joi.string()
-    
+//REGISTER
+router.post("/register", async (req, res) => {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+    const newUser = new User({
+      name: req.body.username,
+      email: req.body.email,
+      password: hashedPass,
+      confirmPassword:hashedPass
+    });
+
+    const user = await newUser.save();
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(3).max(15).required(),
+//LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    !user && res.status(400).json("Wrong credentials!");
+
+    const validated = await bcrypt.compare(req.body.password, user.password);
+    !validated && res.status(400).json("Wrong credentials!");
+
+    const { password, ...others } = user._doc;
+    res.status(200).json(others);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
-
-router.post(
-  "/register",
-  validator.body(registerSchema),
-  authController.postRegister
-);
-
-router.post("/login", validator.body(loginSchema), authController.postLogin);
-
-router.post("/review")
-
 
 module.exports = router;
-

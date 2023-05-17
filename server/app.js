@@ -1,44 +1,49 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require("cors");
-const connectDB = require('./db/connect');
-const blogRoutes = require('./Routes/blogRoutes');
-const auth = require("./Routes/Auth");
-const adminRoute = require('./Routes/adminRoute')
-const blogRoute = require('./Routes/blogRoutes');
-const getAllCategoriesRoute= require('./Routes/getAllCategoriesRoute');
-
-
+const express = require("express");
 const app = express();
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const adminroute= require("./routes/adminRoute")
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
+const postRoute = require("./routes/posts");
+const categoryRoute = require("./routes/categories");
+const multer = require("multer");
+const path = require("path");
 
-// Connect to MongoDB
-connectDB();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+dotenv.config();
 app.use(express.json());
-app.use(cors());
+app.use("/images", express.static(path.join(__dirname, "/images")));
 
-//User route
-app.use("/api/v1/auth", auth);
-// Blog category routes
-app.use('/api/v1/blogs', blogRoutes);
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  res.status(200).json("File has been uploaded");
+});
 
 
-//get all blog categories
-app.use('/api', getAllCategoriesRoute);
+app.use("/api/admin", adminroute)
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
+app.use("/api/categories", categoryRoute);
 
-
-
-//Admin route
-app.use('/api/v1', adminRoute);
-
-//Static files
-app.use("/api/Blogs", express.static("../Blogs"));
-
-
-//BlogPost Routes
-app.use('/api/vi/blogPost', blogRoute);
-
-app.listen(4000, () => {
-    console.log("Server started at port 4000");
+app.listen("4000", () => {
+  console.log("Backend is running at port 4000");
 });
