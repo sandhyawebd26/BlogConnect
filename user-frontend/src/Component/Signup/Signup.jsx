@@ -34,7 +34,7 @@ export default function SignInSide() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data.name, data.email, data.contact, data.password);
+    console.log(data.name, data.email, data.password, data.confirmPassword);
     axios
       .post("http://localhost:4000/api/v1/auth/register", {
         name: data.name,
@@ -132,19 +132,7 @@ export default function SignInSide() {
                   onChange={handleInputs}
                 />
 
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="password"
-                  label="password"
-                  name="confirmPassword"
-                  value={data.confirmPassword}
-                  type="password"
-                  autoComplete="confirmPassword"
-                  autoFocus
-                  onChange={handleInputs}
-                />
+              
                 <TextField
                   margin="normal"
                   required
@@ -155,6 +143,19 @@ export default function SignInSide() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={handleInputs}
+                />
+                  <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="password"
+                  label="password"
+                  name="confirmPassword"
+                  value={data.confirmPassword}
+                  type="password"
+                  autoComplete="confirmPassword"
+                  autoFocus
                   onChange={handleInputs}
                 />
                 <FormControlLabel

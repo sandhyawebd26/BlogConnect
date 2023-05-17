@@ -36,7 +36,7 @@ function Login() {
       setIsLoading(true);
   
       axios
-        .post("http://localhost:4000/api/v1/admin", data)
+        .post("http://localhost:4000/api/admin", data)
         .then((res) => {
           console.log(res)
           console.log(res.data.user.password); // Display the server response
