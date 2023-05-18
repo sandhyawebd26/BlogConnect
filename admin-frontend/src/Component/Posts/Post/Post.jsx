@@ -1,7 +1,26 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 function Post() {
+  const [data, setData] = useState([]);
+  // ...
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/get-blog");
+        console.log(res);
+        setData(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchBlog();
+  }, []);
+
+  // ...
   return (
     <div>
       {" "}
@@ -48,79 +67,40 @@ function Post() {
                   <thead className="thead-dark">
                     <tr>
                       <th>#</th>
+                      <th>Image</th>
                       <th>Title</th>
+
                       <th>Category</th>
                       <th>Date</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Post One</td>
-                      <td>Web Development</td>
-                      <td>May 10 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Post Two</td>
-                      <td>Tech Gadgets</td>
-                      <td>May 11 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Post Three</td>
-                      <td>Web Development</td>
-                      <td>May 13 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Post Four</td>
-                      <td>Business</td>
-                      <td>May 15 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Post Five</td>
-                      <td>Web Development</td>
-                      <td>May 17 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Post Six</td>
-                      <td>Health & Wellness</td>
-                      <td>May 20 2018</td>
-                      <td>
-                        <Link className="btn btn-secondary" to="/Details">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </Link>
-                      </td>
-                    </tr>
+                    {data ? (
+                      data.map((d, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>
+                            <img
+                              src={`http://localhost:4000/api/v1/uploads/${d.blogImage}`}
+                            />
+                          </td>
+                          <td>{d.title}</td>
+                          <td>{d.category}</td>
+                          <td>{new Date(d.createdAt).toLocaleDateString()}</td>
+                          <td>
+                            <Link className="btn btn-secondary" to="/Details">
+                              <i className="fas fa-angle-double-right"></i>{" "}
+                              Details
+                            </Link>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5">No data available</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
 

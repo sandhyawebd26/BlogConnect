@@ -1,66 +1,62 @@
-const Blog = require("../Models/category.js");
+const Category = require('../Models/category')
 
 // Create category
 const postAllCatController = async (req, res) => {
-    const { category } = req.body;
-  
-    if (!category) {
-      return res.status(400).json({
-        success: false,
-        error: "Category name is required",
-      });
-    }
-  
-    try {
-      const createdCategory = await Blog.create({ category });
-      res.status(200).json({
-        success: true,
-        category: createdCategory,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        success: false,
-        error: "Failed to create category",
-      });
-    }
-  };
-  ;
+  const { category } = req.body;
 
-// Get all categories
-const getAllCatController = async (req, res) => {
-  try {
-    const createdBlog = await Blog.find({
-      category: 1,
-      createdAt: 1,
-      updatedAt: 1,
+  if (!category) {
+    return res.status(400).json({
+      success: false,
+      error: "Category name is required",
     });
+  }
+
+  try {
+    const createdCategory = await Category.create({ category });
     res.status(200).json({
       success: true,
-      blog: createdBlog,
+      category: createdCategory,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: "Failed to retrieve blogs",
+      error: "Failed to create category",
+    });
+  }
+};
+
+// Get all categories
+const getAllCatController = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.status(200).json({
+      success: true,
+      categories: categories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve categories",
     });
   }
 };
 
 // Update category by id
 const updateCatController = async (req, res) => {
-  const { id, category } = req.body;
+  const { id } = req.params; // Use req.params to get the category id from the URL path
+  const { category } = req.body; // Get the updated category name from the request body
 
   try {
-    const updatedBlog = await Blog.findByIdAndUpdate(
+    const updatedCategory = await Category.findByIdAndUpdate(
       id,
       { category },
       { new: true }
     );
     res.status(200).json({
       success: true,
-      blog: updatedBlog,
+      category: updatedCategory,
     });
   } catch (error) {
     console.error(error);
@@ -76,7 +72,7 @@ const deleteCatController = async (req, res) => {
   const { id } = req.body;
 
   try {
-    await Blog.findByIdAndDelete(id);
+    await Category.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
       message: "Category deleted successfully",

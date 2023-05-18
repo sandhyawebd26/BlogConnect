@@ -1,4 +1,4 @@
-const Blog = require("../Models/blogPost");
+const { postBlogModel, getBlogModelById, getBlogModel, updateBlogModel, deleteBlogModel } = require("../Models/blogPost");
 
 const postBlogController = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -9,7 +9,7 @@ const postBlogController = async (req, res) => {
   console.log(req.file)
 
   try {
-    const data = await Blog.create({ ...body, blogImage });
+    const data = await postBlogModel({ body, blogImage });
 
     console.log("data =>", data);
     res.send(data);
@@ -19,32 +19,63 @@ const postBlogController = async (req, res) => {
   }
 };
 
+
+//get all blogs 
+
 const getBlogController = async (req, res) => {
   try {
-    const blogs = await Blog.find();
-    res.status(200).json({
+    const data = await getBlogModel();
+
+    console.log("data =>", data);
+    res.send(data);
+  } catch (err) {
+    console.log("ERROR =>", err);
+    res.send(err);
+  }
+};
+
+
+//get blogs by id 
+const getBlogControllerById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await getBlogModelById(id);
+
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blog not found',
+      });
+    }
+
+    res.json({
       success: true,
-      blogs,
+      data: blog,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.log("ERROR =>", err);
     res.status(500).json({
       success: false,
-      error: 'Failed to get blogs',
+      error: 'Internal server error',
     });
   }
 };
 
+//update blog by id
 const updateBlogController = async (req, res) => {
   const { id } = req.params;
-  const { title, category } = req.body;
+  const { category } = req.body;
 
   try {
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      id,
-      { title, category },
-      { new: true }
-    );
+    const updatedBlog = await updateBlogModel(id, { category });
+
+    if (!updatedBlog) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blog not found',
+      });
+    }
+
     res.status(200).json({
       success: true,
       blog: updatedBlog,
@@ -58,11 +89,21 @@ const updateBlogController = async (req, res) => {
   }
 };
 
+//delete blogs by id
+
 const deleteBlogController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await Blog.findByIdAndDelete(id);
+    const deletedBlog = await deleteBlogModel(id);
+
+    if (!deletedBlog) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blog not found',
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'Blog deleted',
@@ -81,4 +122,5 @@ module.exports = {
   getBlogController,
   updateBlogController,
   deleteBlogController,
+  getBlogControllerById
 };

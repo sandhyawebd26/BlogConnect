@@ -1,8 +1,27 @@
+import { useState, useEffect } from "react";
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import axios from "axios";
 
 function Categories() {
+  const [data, setData] = useState([]);
+  // ...
+
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/get-category");
+        setData(res.data.categories);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCats();
+  }, []);
+
+  // ...
+
   return (
     <div>
       <Navbar />
@@ -56,46 +75,31 @@ function Categories() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Web Development</td>
-                      <td>May 10 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Tech Gadgets</td>
-                      <td>May 11 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Business</td>
-                      <td>May 13 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Health & Wellness</td>
-                      <td>May 15 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
+                    {data ? (
+                      data.map((d, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{d.category}</td>
+                          <td>{d.createdAt.slice(0, 10)}</td>{" "}
+                          {/* Extract date */}
+                          {/* <td>{d.createdAt.slice(11, 19)}</td>{" "} */}
+                          {/* Extract time */}
+                          <td>
+                            <a
+                              href="details.html"
+                              className="btn btn-secondary"
+                            >
+                              <i className="fas fa-angle-double-right"></i>{" "}
+                              Details
+                            </a>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3">No data available</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

@@ -1,8 +1,26 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import {useState, useEffect } from "react";
+import axios from "axios";
 
 function Users() {
+  // const [data, setData] = useState([]);
+  // // ...
+
+  // useEffect(() => {
+  //   const fetchBlog = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:4000/api/v1/auth");
+  //       console.log(res);
+  //       setData(res.data.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchBlog();
+  // }, []);
+
   return (
     <div>
       <Navbar />

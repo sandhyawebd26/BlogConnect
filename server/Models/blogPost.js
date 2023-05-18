@@ -4,16 +4,19 @@ const blogSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      required: true,
     },
-    // categoryId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Category",
-    // },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
     blogImage: {
       type: String,
     },
     description: {
       type: String,
+      required: true,
     },
   },
   { timestamps: true }
@@ -21,4 +24,87 @@ const blogSchema = new mongoose.Schema(
 
 const Blog = mongoose.model("Blog", blogSchema);
 
-module.exports = Blog;
+// Use CommonJS export instead of ES modules export
+module.exports.postBlogModel = async (data) => {
+  const { body, blogImage } = data;
+  const { title, categoryId, description } = body; // Corrected the variable name 'CategoryId' to 'categoryId'
+
+  try {
+    const res = await Blog.create({
+      title,
+      categoryId,
+      description,
+      blogImage,
+    });
+
+    return { data: res, message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err.message, status: 500 }; // Return the error message instead of the whole error object
+  }
+};
+
+// Get all blogs
+module.exports.getBlogModel = async () => {
+  try {
+    const res = await Blog.find().populate("categoryId").select("title categoryId blogImage description");
+
+    return { data: res, message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err.message, status: 500 }; // Return the error message instead of the whole error object
+  }
+};
+
+// Get a specific blog by ID
+module.exports.getBlogModelById = async (blogId) => {
+  try {
+    const res = await Blog.findById(blogId);
+
+    if (!res) {
+      return { message: "Blog not found", status: 404 };
+    }
+
+    return { data: res, message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err.message, status: 500 };
+  }
+};
+
+
+//Update By Id
+module.exports.updateBlogModel = async (blogId, data) => {
+  if (!data || Object.keys(data).length === 0) {
+    return { message: "No valid update fields provided", status: 400 };
+  }
+  try {
+    const res = await Blog.findByIdAndUpdate(blogId, data, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!res) {
+      return { message: "Blog not found", status: 404 };
+    }
+
+    return { data: res, message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err.message, status: 500 };
+  }
+};
+
+
+// Delete a specific blog by ID
+module.exports.deleteBlogModel = async (blogId) => {
+  const { body, blogImage } = data || {}; 
+
+  try {
+    const res = await Blog.findByIdAndDelete(blogId);
+
+    if (!res) {
+      return { message: "Blog not found", status: 404 };
+    }
+
+    return { message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err.message, status: 500 };
+  }
+};
