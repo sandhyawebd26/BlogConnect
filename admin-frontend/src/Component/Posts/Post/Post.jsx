@@ -19,7 +19,7 @@ function Post() {
     };
     fetchBlog();
   }, []);
-
+  console.log(data);
   // ...
   return (
     <div>
@@ -77,25 +77,34 @@ function Post() {
                   </thead>
                   <tbody>
                     {data ? (
-                      data.map((d, index) => (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>
-                            <img
-                              src={`http://localhost:4000/api/v1/uploads/${d.blogImage}`}
-                            />
-                          </td>
-                          <td>{d.title}</td>
-                          <td>{d.category}</td>
-                          <td>{new Date(d.createdAt).toLocaleDateString()}</td>
-                          <td>
-                            <Link className="btn btn-secondary" to="/Details">
-                              <i className="fas fa-angle-double-right"></i>{" "}
-                              Details
-                            </Link>
-                          </td>
-                        </tr>
-                      ))
+                      data.map((d, index) => {
+                        {/* console.log("Category:", d.category.category);
+                        console.log("Created At:", d.category.createdAt); */}
+
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>
+                              <img
+                                src={`http://localhost:4000/api/v1/uploads/${d.blogImage}`}
+                              />
+                            </td>
+                            <td>{d.title}</td>
+                            {/* <td>{d.category ? d.category : "N/A"}</td>
+                            <td>
+                              {d.category
+                                ? new Date(d.createdAt).toLocaleDateString()
+                                : "N/A"}
+                            </td> */}
+                            <td>
+                              <Link className="btn btn-secondary" to="/Details">
+                                <i className="fas fa-angle-double-right"></i>{" "}
+                                Details
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })
                     ) : (
                       <tr>
                         <td colSpan="5">No data available</td>

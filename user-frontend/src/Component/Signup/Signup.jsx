@@ -12,7 +12,6 @@ import { Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 export default function SignInSide() {
   const navigate = useNavigate();
 
@@ -20,7 +19,7 @@ export default function SignInSide() {
     name: "",
     email: "",
     password: "",
-    confirmPassword:""
+    confirmPassword: "",
   });
 
   let name, value;
@@ -35,23 +34,25 @@ export default function SignInSide() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data.name, data.email, data.password, data.confirmPassword);
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     axios
       .post("http://localhost:4000/api/v1/auth/register", {
         name: data.name,
         email: data.email,
         password: data.password,
-        confirmPassword: data.password,
+        confirmPassword: data.confirmPassword,
       })
       .then((res) => {
-        
         console.log(res.data);
         navigate("/");
-
-        alert("success")
+        alert("Success");
       })
       .catch((err) => {
         console.log(err);
-        alert('service error');
+        alert("Service error");
       });
   };
 
@@ -66,11 +67,9 @@ export default function SignInSide() {
             sm={4}
             md={7}
             sx={{
-
-            
               backgroundImage:
-              "url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)",
-            backgroundRepeat: "no-repeat",
+                "url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)",
+              backgroundRepeat: "no-repeat",
               backgroundColor: (t) =>
                 t.palette.mode === "light"
                   ? t.palette.grey[50]
@@ -132,7 +131,6 @@ export default function SignInSide() {
                   onChange={handleInputs}
                 />
 
-              
                 <TextField
                   margin="normal"
                   required
@@ -145,12 +143,12 @@ export default function SignInSide() {
                   autoComplete="current-password"
                   onChange={handleInputs}
                 />
-                  <TextField
+                <TextField
                   margin="normal"
                   required
                   fullWidth
-                  id="password"
-                  label="password"
+                  id="confirmPassword"
+                  label="Confirm Password"
                   name="confirmPassword"
                   value={data.confirmPassword}
                   type="password"

@@ -33,16 +33,22 @@ export default function SignInSide() {
         }
       );
       console.log(response.data);
-      // Handle successful login response
 
       // Navigate to home page
       navigate("/");
     } catch (error) {
       console.error(error);
-      // Handle error response
+      if (error.response) {
+        if (error.response.status === 401) {
+          alert("Incorrect password"); // Display incorrect password error message
+        } else {
+          alert("Service error"); // Display general error message for other status codes
+        }
+      } else {
+        alert("Service error"); // Display general error message for network errors
+      }
     }
   };
-
   return (
     <Container component="main" maxWidth="lg">
       <Box

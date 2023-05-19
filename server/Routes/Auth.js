@@ -9,7 +9,12 @@ const registerSchema = Joi.object({
   password: Joi.string().min(3).max(15).required().label("password"),
   name: Joi.string().required().label("fullname"),
   confirmPassword: Joi.string()
-    
+    .valid(Joi.ref("password"))
+    .required()
+    .label("confirm password")
+    .messages({
+      "any.only": "Passwords do not match",
+    }),
 });
 
 const loginSchema = Joi.object({
@@ -17,6 +22,7 @@ const loginSchema = Joi.object({
   password: Joi.string().min(3).max(15).required(),
 });
 
+//create user
 router.post(
   "/register",
   validator.body(registerSchema),
@@ -25,8 +31,4 @@ router.post(
 
 router.post("/login", validator.body(loginSchema), authController.postLogin);
 
-router.post("/review")
-
-
 module.exports = router;
-

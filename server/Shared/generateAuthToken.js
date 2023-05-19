@@ -6,7 +6,7 @@ function generateAuthToken(user) {
 
     {
       _id: user._id.toString(),
-      userName: `${user.fullname}`,
+      name: `${user.name}`,
     },
     SECRETKEY,
     {

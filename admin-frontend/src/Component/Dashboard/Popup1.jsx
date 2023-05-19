@@ -1,14 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import $ from 'jquery';
+window.jQuery = $;
 
 function Popup1() {
-  const [categoryTitle, setCategoryTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const modalRef = useRef(null);
 
- 
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4000/api/new", { category });
+      console.log(res.data);
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closeModal = () => {
+    $("#addCategoryModal").modal("hide");
+    setCategory("");
+  };
+
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (modal) {
+      $(modal).on("hidden.bs.modal", () => {
+        setCategory("");
+      });
+    }
+  }, []);
 
   return (
     <div>
-      <div className="modal fade" id="addCategoryModal">
+      <div className="modal fade" id="addCategoryModal" ref={modalRef}>
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header bg-success text-white">
@@ -18,15 +44,15 @@ function Popup1() {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleCategorySubmit}>
                 <div className="form-group">
-                  <label htmlFor="title">Title</label>
+                  <label htmlFor="category">Category</label>
                   <input
                     type="text"
                     className="form-control"
                     name="category"
-                    value={categoryTitle}
-                    // onChange={handleTitleChange}
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                   />
                 </div>
                 <button type="submit" className="btn btn-success">
