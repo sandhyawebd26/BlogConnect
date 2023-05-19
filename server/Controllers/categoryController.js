@@ -43,6 +43,32 @@ const getAllCatController = async (req, res) => {
   }
 };
 
+//Get category by Id
+
+const getCatByIdController= async (req, res) => {
+  const { id } = req.params; // Get the category ID from the URL path
+
+  try {
+    const category = await Category.findById(id);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        error: "Category not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      category: category,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve category",
+    });
+  }
+};
+
 // Update category by id
 const updateCatController = async (req, res) => {
   const { id } = req.params; // Use req.params to get the category id from the URL path
@@ -69,7 +95,7 @@ const updateCatController = async (req, res) => {
 
 // Delete category by id
 const deleteCatController = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params; // Retrieve the ID from req.params instead of req.body
 
   try {
     await Category.findByIdAndDelete(id);
@@ -91,4 +117,5 @@ module.exports = {
   getAllCatController,
   updateCatController,
   deleteCatController,
+  getCatByIdController
 };

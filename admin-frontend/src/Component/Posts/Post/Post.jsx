@@ -78,8 +78,8 @@ function Post() {
                   <tbody>
                     {data ? (
                       data.map((d, index) => {
-                        {/* console.log("Category:", d.category.category);
-                        console.log("Created At:", d.category.createdAt); */}
+                        console.log("Category:", d.categoryId.category);
+                        console.log("Created At:", d.categoryId.createdAt);
 
                         return (
                           <tr key={index}>
@@ -90,12 +90,18 @@ function Post() {
                               />
                             </td>
                             <td>{d.title}</td>
-                            {/* <td>{d.category ? d.category : "N/A"}</td>
                             <td>
-                              {d.category
-                                ? new Date(d.createdAt).toLocaleDateString()
+                              {d.categoryId.category
+                                ? d.categoryId.category
                                 : "N/A"}
-                            </td> */}
+                            </td>
+                            <td>
+                              {d.categoryId
+                                ? new Date(
+                                    d.categoryId.createdAt
+                                  ).toLocaleDateString()
+                                : "N/A"}
+                            </td>
                             <td>
                               <Link className="btn btn-secondary" to="/Details">
                                 <i className="fas fa-angle-double-right"></i>{" "}

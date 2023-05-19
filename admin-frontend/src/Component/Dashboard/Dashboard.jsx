@@ -10,7 +10,6 @@ import axios from "axios";
 
 function Dashboard() {
   const [data, setData] = useState([]);
-  // ...
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -100,7 +99,7 @@ function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                  {data ? (
+                    {data ? (
                       data.map((d, index) => (
                         <tr key={index}>
                           <td>{index + 1}</td>
@@ -110,8 +109,18 @@ function Dashboard() {
                             />
                           </td> */}
                           <td>{d.title}</td>
-                          <td>{d.category}</td>
-                          <td>{new Date(d.createdAt).toLocaleDateString()}</td>
+                          <td>
+                            {d.categoryId.category
+                              ? d.categoryId.category
+                              : "N/A"}
+                          </td>
+                          <td>
+                            {d.categoryId
+                              ? new Date(
+                                  d.categoryId.createdAt
+                                ).toLocaleDateString()
+                              : "N/A"}
+                          </td>
                           <td>
                             <Link className="btn btn-secondary" to="/Details">
                               <i className="fas fa-angle-double-right"></i>{" "}
@@ -137,10 +146,7 @@ function Dashboard() {
                     <i className="fas fa-pencil-alt"></i> 6
                   </h4>
 
-                  <Link
-                    to="/Posts"
-                    className="btn btn-outline-light btn-sm"
-                  >
+                  <Link to="/Posts" className="btn btn-outline-light btn-sm">
                     View
                   </Link>
                 </div>
@@ -158,7 +164,6 @@ function Dashboard() {
                   >
                     View
                   </Link>
-                
                 </div>
               </div>
 
@@ -168,10 +173,7 @@ function Dashboard() {
                   <h4 className="display-4">
                     <i className="fas fa-users"></i> 4
                   </h4>
-                  <Link
-                    to="/Users"
-                    className="btn btn-outline-light btn-sm"
-                  >
+                  <Link to="/Users" className="btn btn-outline-light btn-sm">
                     View
                   </Link>
                 </div>

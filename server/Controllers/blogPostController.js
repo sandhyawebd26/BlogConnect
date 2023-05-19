@@ -37,6 +37,7 @@ const getBlogController = async (req, res) => {
 
 //get blogs by id 
 const getBlogControllerById = async (req, res) => {
+  
   try {
     const { id } = req.params;
     const blog = await getBlogModelById(id);
@@ -61,13 +62,19 @@ const getBlogControllerById = async (req, res) => {
   }
 };
 
-//update blog by id
+
 const updateBlogController = async (req, res) => {
+  const blogImage = req?.file?.filename;
   const { id } = req.params;
   const { category } = req.body;
 
   try {
-    const updatedBlog = await updateBlogModel(id, { category });
+    const updatedBlog = await findByIdAndUpdate(
+      id,
+   
+      { body, image: blogImage }, // Update the category and image fields
+      { new: true }
+    );
 
     if (!updatedBlog) {
       return res.status(404).json({

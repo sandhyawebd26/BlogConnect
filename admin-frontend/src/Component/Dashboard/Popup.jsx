@@ -1,56 +1,156 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function Popup() {
+  const [closeModal, setCloseModal] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [blogPost, setBlogPost] = useState({
+    title: "",
+    body: "",
+    category: "",
+  });
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/get-category");
+        setCategories(res.data.categories);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", blogPost.title);
+      formData.append("description", blogPost.body);
+      formData.append("categoryId", selectedCategory);
+      formData.append("image", blogPost.image); // Assuming blogPost.image is the selected file
+
+      const res = await axios.post(
+        "http://localhost:4000/api/v1/post-blog",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(res);
+      setCloseModal(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    setBlogPost({
+      ...blogPost,
+      blogImage: e.target.files[0],
+    });
+  };
+
+  const handleCloseModal = () => {
+    setBlogPost({
+      title: "",
+      body: "",
+      category: "",
+    });
+    setCloseModal(false);
+  };
+
   return (
     <div>
-      <div class="modal fade" id="addPostModal">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title">Add Post</h5>
-              <button class="close" data-dismiss="modal">
-                <span>&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label for="category">Category</label>
-                  <select class="form-control">
-                    <option value="">Web Development</option>
-                    <option value="">Tech Gadgets</option>
-                    <option value="">Business</option>
-                    <option value="">Health & Wellness</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="image">Upload Image</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="image" />
-                    <label for="image" class="custom-file-label">
-                      Choose File
-                    </label>
+      {closeModal ? null : (
+        <div className="modal fade" id="addPostModal">
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="modal-header bg-primary text-white">
+                <h5 className="modal-title">Add Post</h5>
+                <button
+                  className="close"
+                  data-dismiss="modal"
+                  onClick={handleCloseModal}
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handlePostSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="title">Title</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={blogPost.title}
+                      onChange={(e) =>
+                        setBlogPost({
+                          ...blogPost,
+                          title: e.target.value,
+                        })
+                      }
+                    />
                   </div>
-                  <small class="form-text text-muted">Max Size 3mb</small>
-                </div>
-                <div class="form-group">
-                  <label for="body">Body</label>
-                  <textarea name="editor1" class="form-control"></textarea>
-                </div>
-              </form>
+                  <div className="form-group">
+                    <label htmlFor="category">Category</label>
+                    <select
+                      className="form-control"
+                      value={selectedCategory}
+                      // key={categories._id} value={categories._id}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                      <option value="">Select a category</option>
+                      {categories.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="image">Upload Image</label>
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="image"
+                        onChange={handleImageChange}
+                      />
+                      <label htmlFor="image" className="custom-file-label">
+                        Choose File
+                      </label>
+                    </div>
+                    <small className="form-text text-muted">Max Size 3mb</small>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="body">Body</label>
+                    <textarea
+                      name="editor1"
+                      className="form-control"
+                      value={blogPost.body}
+                      onChange={(e) =>
+                        setBlogPost({ ...blogPost, body: e.target.value })
+                      }
+                    ></textarea>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="submit" className="btn btn-primary">
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" data-dismiss="modal">
-                Save Changes
-              </button>
-            </div>
+            )
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

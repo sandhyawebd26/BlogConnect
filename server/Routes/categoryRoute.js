@@ -5,16 +5,21 @@ const {
   getAllCatController,
   updateCatController,
   deleteCatController,
+  getCatByIdController
 } = require("../Controllers/categoryController");
-const { getBlogControllerById } = require("../Controllers/blogPostController");
 
+//create category
 router.post("/new", postAllCatController);
+
+//get all categories
 router.get("/get-category", getAllCatController);
 
-//get blog by id
-router.get("/get-blog", getBlogControllerById);
 
-router.put("/update-category", updateCatController);
-router.delete("/delete-category", deleteCatController);
+//get category by id
+router.get("/get-cat/:id", getCatByIdController);
+
+router.put("/update-category/:id", updateCatController);
+
+router.delete("/delete-category/:id", deleteCatController);
 
 module.exports = router;

@@ -3,15 +3,18 @@ import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Categories() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
-  // ...
 
   useEffect(() => {
     const fetchCats = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/get-category");
+        console.log(res)
         setData(res.data.categories);
       } catch (error) {
         console.error(error);
@@ -19,8 +22,6 @@ function Categories() {
     };
     fetchCats();
   }, []);
-
-  // ...
 
   return (
     <div>
@@ -81,17 +82,14 @@ function Categories() {
                           <td>{index + 1}</td>
                           <td>{d.category}</td>
                           <td>{d.createdAt.slice(0, 10)}</td>{" "}
-                          {/* Extract date */}
-                          {/* <td>{d.createdAt.slice(11, 19)}</td>{" "} */}
-                          {/* Extract time */}
                           <td>
-                            <a
-                              href="details.html"
+                            <button
+                              onClick={() =>navigate(`/catdetails/${d._id}`)}
                               className="btn btn-secondary"
                             >
                               <i className="fas fa-angle-double-right"></i>{" "}
                               Details
-                            </a>
+                            </button>
                           </td>
                         </tr>
                       ))
