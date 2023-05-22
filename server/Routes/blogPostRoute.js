@@ -30,7 +30,7 @@ router.get("/get-blog",getBlogController);
 // get blog by id
 router.get("/get-blog/:id", getBlogControllerById);
 
-router.put("/update-blog/:id", updateBlogController);
+router.put("/update-blog/:id", upload.single("file"), updateBlogController);
 
 router.delete("/delete-blog/:id", deleteBlogController);
 

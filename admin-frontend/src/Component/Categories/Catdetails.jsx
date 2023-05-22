@@ -9,6 +9,7 @@ function CatDetailsPage() {
   const [category, setCategory] = useState("");
   const { id } = useParams();
 
+  //get cat by id
   useEffect(() => {
     const fetchCategoryById = async () => {
       try {
@@ -22,6 +23,7 @@ function CatDetailsPage() {
     fetchCategoryById();
   }, [id]);
 
+  //update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,6 +37,8 @@ function CatDetailsPage() {
     }
   };
 
+
+  //delete by id
   const handleDelete = async (e) => {
     e.preventDefault();
 

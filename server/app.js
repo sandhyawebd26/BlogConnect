@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("./db/connect");
 const blogRoutes = require("./Routes/blogPostRoute");
 const auth = require("./Routes/Auth");
+const user= require('./Routes/usersRoute');
 const adminRoute = require("./Routes/adminRoute");
 const path = require('path')
 const categoryRoute = require("./Routes/categoryRoute");
@@ -21,6 +22,8 @@ app.use("/api/v1/uploads", express.static(path.join(__dirname, "./uploads")));
 
 // User route
 app.use("/api/v1/auth", auth);
+
+app.use("/api/v1", user);
 
 // Admin route
 app.use("/api", adminRoute);

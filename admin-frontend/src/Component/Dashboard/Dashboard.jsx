@@ -7,15 +7,18 @@ import Popup2 from "./Popup2";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/v1/get-blog");
-        console.log(res);
+        console.log(res.data);
         setData(res.data.data.data);
       } catch (error) {
         console.error(error);
@@ -122,10 +125,14 @@ function Dashboard() {
                               : "N/A"}
                           </td>
                           <td>
-                            <Link className="btn btn-secondary" to="/Details">
+                            <button
+                              onClick={() => navigate(`/Details/${d._id}`)}
+                              className="btn btn-secondary"
+                              to="/Details"
+                            >
                               <i className="fas fa-angle-double-right"></i>{" "}
                               Details
-                            </Link>
+                            </button>
                           </td>
                         </tr>
                       ))

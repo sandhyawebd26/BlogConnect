@@ -71,31 +71,32 @@ module.exports.getBlogModelById = async (blogId) => {
 
 
 //Update By Id
-module.exports.updateBlogModel = async (blogId, data) => {
-  if (!data || Object.keys(data).length === 0) {
+module.exports.updateBlogModel = async (id, body,blogImage) => {
+  if (!body || Object.keys(body).length === 0) {
     return { message: "No valid update fields provided", status: 400 };
   }
   try {
-    const res = await Blog.findByIdAndUpdate(blogId, data, {
-      new: true,
-      runValidators: true,
-    });
+    const res = await Blog.findByIdAndUpdate(id,
+      {...body, blogImage},
+        {  new:true}
+  
+    
+  );
 
     if (!res) {
       return { message: "Blog not found", status: 404 };
     }
+    console.log("RES=>",res);
 
-    return { data: res, message: "Success", status: 200 };
+    return { result: res, message: "Success", status: 200 };
   } catch (err) {
     return { message: err.message, status: 500 };
   }
 };
 
 
-// Delete a specific blog by ID
+/// Delete a specific blog by ID
 module.exports.deleteBlogModel = async (blogId) => {
-  const { body, blogImage } = data || {}; 
-
   try {
     const res = await Blog.findByIdAndDelete(blogId);
 
@@ -108,3 +109,4 @@ module.exports.deleteBlogModel = async (blogId) => {
     return { message: err.message, status: 500 };
   }
 };
+

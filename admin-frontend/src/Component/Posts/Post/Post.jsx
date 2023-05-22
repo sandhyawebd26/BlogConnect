@@ -2,11 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function Post() {
-  const [data, setData] = useState([]);
-  // ...
+  const navigate = useNavigate();
 
+  const [data, setData] = useState([]);
+  
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -20,7 +23,7 @@ function Post() {
     fetchBlog();
   }, []);
   console.log(data);
-  // ...
+
   return (
     <div>
       {" "}
@@ -78,8 +81,8 @@ function Post() {
                   <tbody>
                     {data ? (
                       data.map((d, index) => {
-                        console.log("Category:", d.categoryId.category);
-                        console.log("Created At:", d.categoryId.createdAt);
+                        // console.log("Category:", d.categoryId.category);
+                        // console.log("Created At:", d.categoryId.createdAt);
 
                         return (
                           <tr key={index}>
@@ -91,8 +94,8 @@ function Post() {
                             </td>
                             <td>{d.title}</td>
                             <td>
-                              {d.categoryId.category
-                                ? d.categoryId.category
+                              {d?.categoryId?.category
+                                ? d.categoryId?.category
                                 : "N/A"}
                             </td>
                             <td>
@@ -103,10 +106,12 @@ function Post() {
                                 : "N/A"}
                             </td>
                             <td>
-                              <Link className="btn btn-secondary" to="/Details">
+                              <button 
+                              onClick={()=>navigate(`/Details/${d._id}`)}
+                              className="btn btn-secondary" to="/Details">
                                 <i className="fas fa-angle-double-right"></i>{" "}
                                 Details
-                              </Link>
+                              </button>
                             </td>
                           </tr>
                         );
