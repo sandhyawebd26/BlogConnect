@@ -1,8 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
+
 
 function Details() {
+  const [blog, setBlog]=useState([]);
+  const {id}=useParams();
+
+  useEffect(()=>{
+    const fetchBlogById= async()=>{
+      try{
+        const res = await axios.get(`http://localhost:4000/api/v1/get-blog/${id}`);
+        setBlog(res.data.blog);
+        console.log(res.data);
+      } catch(error){
+        console.log(error);
+      }
+    };
+    fetchBlogById();
+  }, [id]);
+
+ 
+const handleUpdate= async (e)=>{
+  e.preventDefault();
+
+  try{
+    await axios.put(`http://localhost:4000/api/v1/update-blog/${id}`,{
+      blog,
+    })
+    alert("Blog Updated successfully");
+
+  } catch(error){
+    console.log(error);
+  }
+};
+
+const handleDelete = async (e) => {
+  e.preventDefault();
+
+  try {
+    await axios.delete(`http://localhost:4000/api/v1/delete-blog/${id}`,{
+  blog,
+});
+    alert("Blog deleted successfully!!");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
   return (
     <div>
       <Navbar />
@@ -25,12 +74,12 @@ function Details() {
               </a>
             </div>
             <div class="col-md-3">
-              <a href="index.html" class="btn btn-success btn-block">
+              <a href="index.html" class="btn btn-success btn-block" onClick={handleUpdate}>
                 <i class="fas fa-check"></i> Save Changes
               </a>
             </div>
             <div class="col-md-3">
-              <a href="index.html" class="btn btn-danger btn-block">
+              <a href="index.html" class="btn btn-danger btn-block"  onClick={handleDelete}>
                 <i class="fas fa-trash"></i> Delete Post
               </a>
             </div>
@@ -53,7 +102,10 @@ function Details() {
                       <input
                         type="text"
                         class="form-control"
-                        value="Post One"
+                        value={blog.title}
+          onChange={(e) => {
+            setBlog({ ...blog, title: e.target.value });
+          }}
                       />
                     </div>
                     <div class="form-group">
@@ -74,6 +126,7 @@ function Details() {
                           type="file"
                           class="custom-file-input"
                           id="image"
+                          value=""
                         />
                         <label for="image" class="custom-file-label">
                           Choose File

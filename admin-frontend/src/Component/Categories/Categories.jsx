@@ -7,20 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 function Categories() {
   const navigate = useNavigate();
-
   const [data, setData] = useState([]);
+  console.log(data);
 
   useEffect(() => {
-    const fetchCats = async () => {
+    const fetchBlog = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/get-category");
-        console.log(res)
+        console.log(res);
         setData(res.data.categories);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchCats();
+    
+    fetchBlog();
+
   }, []);
 
   return (

@@ -21,16 +21,30 @@ const postBlogController = async (req, res) => {
 
 
 //get all blogs 
-
 const getBlogController = async (req, res) => {
   try {
     const data = await getBlogModel();
 
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blogs not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: data,
+      NumberOfBlogs: data.data.length
+    });
+
     console.log("data =>", data);
-    res.send(data);
   } catch (err) {
     console.log("ERROR =>", err);
-    res.send(err);
+    return res.status(500).json({
+      success: false,
+      error: 'Internal server error',
+    });
   }
 };
 

@@ -33,6 +33,7 @@ const getAllCatController = async (req, res) => {
     res.status(200).json({
       success: true,
       categories: categories,
+      numberOfCategories: categories.length
     });
   } catch (error) {
     console.error(error);
@@ -54,6 +55,7 @@ const getCatByIdController= async (req, res) => {
       return res.status(404).json({
         success: false,
         error: "Category not found",
+        
       });
     }
     res.status(200).json({
