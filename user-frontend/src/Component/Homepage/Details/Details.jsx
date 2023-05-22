@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./CarDetails.css";
+import "./Details.css";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../../Footer/Footer";
 import { useParams, useNavigate } from "react-router-dom";
@@ -12,18 +12,18 @@ function CarDetails() {
 
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchBlog = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:4000/api/v1/get-blog");
-  //       console.log(res);
-  //       setData(res.data.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchBlog();
-  // }, []);
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/get-blog");
+        console.log(res);
+        setData(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchBlog();
+  }, []);
   const { id } = useParams();
   console.log(id);
   return (
@@ -32,12 +32,12 @@ function CarDetails() {
       <Link to={`/${cards.id}`} style={{ textDecoration: "none" }}>
         <div className="container">
           <div className="title">
-            <h3 className="carTitle">{cards[id - 1].title}</h3>
+            <h3 className="carTitle">{cards[id - 1]?.title}</h3>
             {/* <img
               src={`http://localhost:4000/api/v1/uploads/${d.blogImage}`}
               alt="..."
             /> */}
-            <p>{cards[id - 1].description}</p>
+            <p>{cards[id - 1]?.description}</p>
           </div>
         </div>
       </Link>

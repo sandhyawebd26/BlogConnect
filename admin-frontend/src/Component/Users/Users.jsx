@@ -1,25 +1,28 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import {useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Users() {
-  // const [data, setData] = useState([]);
-  // // ...
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchBlog = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:4000/api/v1/auth");
-  //       console.log(res);
-  //       setData(res.data.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchBlog();
-  // }, []);
+  const [data, setData] = useState([]);
+  //get all users
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get(" http://localhost:4000/api/v1/users");
+        console.log(res);
+        setData(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <div>
@@ -74,36 +77,27 @@ function Users() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>John Doe</td>
-                      <td>jdoe@gmail.com</td>
-                      <td>
-                        <a href="details.html" class="btn btn-secondary">
-                          <i class="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Harry White</td>
-                      <td>harry@yahoo.com</td>
-                      <td>
-                        <a href="details.html" class="btn btn-secondary">
-                          <i class="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Mary Johnson</td>
-                      <td>mary@gmail.com</td>
-                      <td>
-                        <a href="details.html" class="btn btn-secondary">
-                          <i class="fas fa-angle-double-right"></i> Details
-                        </a>
-                      </td>
-                    </tr>
+                    {data ? (
+                      data.map((d, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{d.name}</td>
+                          <td>{d.email}</td>
+                          <td>
+                            <button
+                              onClick={() => navigate(`/UserDetails/${d._id}`)}
+                              class="btn btn-secondary"
+                            >
+                              <i class="fas fa-angle-double-right"></i> Details
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3">No data available</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

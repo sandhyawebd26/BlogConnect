@@ -31,7 +31,7 @@ function Popup() {
       formData.append("title", blogPost.title);
       formData.append("description", blogPost.body);
       formData.append("categoryId", selectedCategory);
-      formData.append("image", blogPost.image); // Assuming blogPost.image is the selected file
+      formData.append("file", blogPost.blogImage); // Assuming blogPost.image is the selected file
 
       const res = await axios.post(
         "http://localhost:4000/api/v1/post-blog",

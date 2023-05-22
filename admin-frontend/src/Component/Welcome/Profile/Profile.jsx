@@ -64,17 +64,7 @@ function Profile() {
                         value="test@test.com"
                       />
                     </div>
-                    <div className="form-group">
-                      <label for="bio">Bio</label>
-                      <textarea className="form-control" name="editor1">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Aliquid unde at fugiat explicabo temporibus, tempora
-                        animi sunt iusto quod beatae optio veritatis velit natus
-                        odit error! Possimus esse quisquam quibusdam eveniet
-                        autem! Minus dolore quisquam nemo similique doloribus
-                        perspiciatis tempore.
-                      </textarea>
-                    </div>
+          
                   </form>
                 </div>
               </div>
