@@ -1,4 +1,4 @@
-const { postBlogModel, getBlogModelById, getBlogModel, updateBlogModel, deleteBlogModel } = require("../Models/blogPost");
+const { postBlogModel, getBlogModelById, getBlogModel, updateBlogModel, deleteBlogModel, getByUSerBlogModel } = require("../Models/blogPost");
 
 const postBlogController = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -10,11 +10,8 @@ const postBlogController = async (req, res) => {
 
   try {
     const data = await postBlogModel({ body, blogImage });
-
-    console.log("data =>", data);
     res.send(data);
   } catch (err) {
-    console.log("ERROR =>", err);
     res.send(err);
   }
 };
@@ -37,8 +34,6 @@ const getBlogController = async (req, res) => {
       data: data,
       NumberOfBlogs: data.data.length
     });
-
-    console.log("data =>", data);
   } catch (err) {
     console.log("ERROR =>", err);
     return res.status(500).json({
@@ -51,7 +46,7 @@ const getBlogController = async (req, res) => {
 
 //get blogs by id 
 const getBlogControllerById = async (req, res) => {
-  
+
   try {
     const { id } = req.params;
     const blog = await getBlogModelById(id);
@@ -83,7 +78,7 @@ const updateBlogController = async (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "POST");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   const { id } = req.params;
-  const body  = req.body;
+  const body = req.body;
   const blogImage = req?.file?.filename;
 
 
@@ -99,7 +94,7 @@ const updateBlogController = async (req, res) => {
     //   data.blogImage = file.filename;
     // }
 
-    const result = await updateBlogModel(id, body,blogImage);
+    const result = await updateBlogModel(id, body, blogImage);
 
     if (result.status === 404) {
       return res.status(404).json({
@@ -111,7 +106,7 @@ const updateBlogController = async (req, res) => {
     if (result.status === 200) {
       return res.status(200).json({
         success: true,
-     result
+        result
       });
     }
 
@@ -195,10 +190,41 @@ const deleteBlogController = async (req, res) => {
   }
 };
 
+const getByUSerBlogController = async (req, res) => {
+  const user_id = req.user._id
+  try {
+    const data = await getByUSerBlogModel(user_id);
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blogs not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: data,
+      NumberOfBlogs: data.data.length
+    });
+
+    console.log("data =>", data);
+  } catch (err) {
+    console.log("ERROR =>", err);
+    return res.status(500).json({
+      success: false,
+      error: 'Internal server error',
+    });
+  }
+}
+
+
+
 module.exports = {
   postBlogController,
   getBlogController,
   updateBlogController,
   deleteBlogController,
-  getBlogControllerById
+  getBlogControllerById, 
+  getByUSerBlogController
 };

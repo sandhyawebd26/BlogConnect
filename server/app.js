@@ -8,6 +8,11 @@ const user= require('./Routes/usersRoute');
 const adminRoute = require("./Routes/adminRoute");
 const path = require('path')
 const categoryRoute = require("./Routes/categoryRoute");
+// const authMiddleware= require("./middleware/auth")
+const checkoutRoute=require('./Routes/checkoutRoute');
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); 
+
 // const img = require ('./uploads')
 
 const app = express();
@@ -33,6 +38,9 @@ app.use("/api/v1", blogRoutes);
 
 // categories
 app.use("/api", categoryRoute);
+
+//payment route
+app.use("/", checkoutRoute);
 
 app.listen(4000, () => {
   console.log("Server started at port 4000");

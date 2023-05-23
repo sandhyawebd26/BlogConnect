@@ -101,8 +101,8 @@ function Popup() {
                     <label htmlFor="category">Category</label>
                     <select
                       className="form-control"
-                      value={selectedCategory}
-                      // key={categories._id} value={categories._id}
+                      // value={selectedCategory}
+                      key={categories._id} value={categories._id}
                       onChange={(e) => setSelectedCategory(e.target.value)}
                     >
                       <option value="">Select a category</option>

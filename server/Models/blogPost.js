@@ -18,6 +18,11 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    }
   },
   { timestamps: true }
 );
@@ -27,7 +32,7 @@ const Blog = mongoose.model("Blog", blogSchema);
 // Use CommonJS export instead of ES modules export
 module.exports.postBlogModel = async (data) => {
   const { body, blogImage } = data;
-  const { title, categoryId, description } = body; // Corrected the variable name 'CategoryId' to 'categoryId'
+  const { title, categoryId, description, userId } = body; // Corrected the variable name 'CategoryId' to 'categoryId'
 
   try {
     const res = await Blog.create({
@@ -35,6 +40,7 @@ module.exports.postBlogModel = async (data) => {
       categoryId,
       description,
       blogImage,
+      userId
     });
 
     return { data: res, message: "Success", status: 200 };
@@ -71,22 +77,22 @@ module.exports.getBlogModelById = async (blogId) => {
 
 
 //Update By Id
-module.exports.updateBlogModel = async (id, body,blogImage) => {
+module.exports.updateBlogModel = async (id, body, blogImage) => {
   if (!body || Object.keys(body).length === 0) {
     return { message: "No valid update fields provided", status: 400 };
   }
   try {
     const res = await Blog.findByIdAndUpdate(id,
-      {...body, blogImage},
-        {  new:true}
-  
-    
-  );
+      { ...body, blogImage },
+      { new: true }
+
+
+    );
 
     if (!res) {
       return { message: "Blog not found", status: 404 };
     }
-    console.log("RES=>",res);
+    console.log("RES=>", res);
 
     return { result: res, message: "Success", status: 200 };
   } catch (err) {
@@ -110,3 +116,13 @@ module.exports.deleteBlogModel = async (blogId) => {
   }
 };
 
+//getByUSerBlogModel user_id
+
+module.exports.getByUSerBlogModel = async (user_id) => {
+  try {
+    const res = await Blog.find({userId:user_id})
+    return { data: res, message: "Success", status: 200 };
+  } catch (err) {
+    return { message: err, status: 500 };
+  }
+};

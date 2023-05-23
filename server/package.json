@@ -10,6 +10,7 @@
   "author": "sandhiya",
   "license": "ISC",
   "dependencies": {
+    "@stripe/stripe-js": "^1.53.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -25,6 +26,7 @@
     "mongodb": "^5.5.0",
     "mongoose": "^7.1.1",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "stripe": "^12.6.0"
   }
 }

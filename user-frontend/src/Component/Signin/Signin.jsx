@@ -33,6 +33,9 @@ export default function SignInSide() {
         }
       );
       console.log(response.data);
+      localStorage.setItem("user_id",response.data.user._id)
+      localStorage.setItem("user_token",response.data.token)
+
 
       // Navigate to home page
       navigate("/");
