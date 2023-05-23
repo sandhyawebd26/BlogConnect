@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
 
 function CatDetailsPage() {
+  const navigate= useNavigate();
   const [category, setCategory] = useState("");
   const { id } = useParams();
 
@@ -67,7 +68,7 @@ function CatDetailsPage() {
         <div class="container">
           <div class="row">
             <div class="col-md-3">
-              <button class="btn btn-light btn-block">
+              <button class="btn btn-light btn-block" onClick={()=>navigate(`/`)}>
                 <i class="fas fa-arrow-left"></i> Back To Dashboard
               </button>
             </div>

@@ -12,7 +12,7 @@ function Popup1() {
         category,
       });
       console.log(res);
-     
+
       setCloseModal(true);
     } catch (error) {
       console.error(error);

@@ -1,15 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 
 function Post() {
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
-  
+
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -106,9 +104,11 @@ function Post() {
                                 : "N/A"}
                             </td>
                             <td>
-                              <button 
-                              onClick={()=>navigate(`/Details/${d._id}`)}
-                              className="btn btn-secondary" to="/Details">
+                              <button
+                                onClick={() => navigate(`/Details/${d._id}`)}
+                                className="btn btn-secondary"
+                                to="/Details"
+                              >
                                 <i className="fas fa-angle-double-right"></i>{" "}
                                 Details
                               </button>

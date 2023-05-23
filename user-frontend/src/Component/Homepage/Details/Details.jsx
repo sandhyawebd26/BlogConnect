@@ -7,43 +7,51 @@ import cards from "../cardJson";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function CarDetails() {
-  const navigate = useNavigate(); // useNavigate hook
+function Details() {
+  const { id } = useParams();
+  const [blog, setBlog] = useState(null);
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchBlog = async () => {
+  
+    useEffect(() => {
+    const fetchBlogDetails = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/v1/get-blog");
-        console.log(res);
-        setData(res.data.data);
+        const res = await axios.get(`http://localhost:4000/api/v1/get-blog/${id}`);
+       
+       console.log(res.data.data.data)
+        setBlog(res.data.data);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchBlog();
-  }, []);
-  const { id } = useParams();
-  console.log(id);
+    fetchBlogDetails();
+  }, [id]);
+
+  
   return (
     <>
       <Navbar />
-      <Link to={`/${cards.id}`} style={{ textDecoration: "none" }}>
+      {blog ? (
         <div className="container">
-          <div className="title">
-            <h3 className="carTitle">{cards[id - 1]?.title}</h3>
-            {/* <img
-              src={`http://localhost:4000/api/v1/uploads/${d.blogImage}`}
-              alt="..."
-            /> */}
-            <p>{cards[id - 1]?.description}</p>
+          <div className="row mt-5">
+            <div className="col-md-8 offset-md-2">
+              <h2>{blog.title}</h2>
+              {/* <img
+                src={`http://localhost:4000/api/v1/uploads/${blog.blogImage}`}
+                alt="Blog"
+                className="img-fluid my-4"
+              /> */}
+              <p>{blog.description}</p>
+              <h4>Category: {blog.category}</h4>
+              {/* Additional blog details can be displayed here */}
+            </div>
           </div>
         </div>
-      </Link>
+      ) : (
+        <p>Loading...</p>
+      )}
       <Footer />
     </>
   );
 }
 
-export default CarDetails;
+export default Details;

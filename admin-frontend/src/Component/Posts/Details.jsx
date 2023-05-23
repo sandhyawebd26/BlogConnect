@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Details() {
+  const navigate= useNavigate();
   const [blog, setBlog] = useState({});
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [blogImage, setBlogImage]=useState("");
+  const [blogImage, setBlogImage] = useState("");
 
   const { id } = useParams();
 
@@ -30,11 +31,11 @@ function Details() {
         const res = await axios.get(
           `http://localhost:4000/api/v1/get-blog/${id}`
         );
-        console.log("=?",res);
+        console.log("=?", res);
         setBlog(res.data.data.data);
         setSelectedCategory(res.data.data.data.categoryId);
-        setBlogImage(res.data.data.data.blogImage); 
-        console.log(res.data.data.data.blogImage)
+        setBlogImage(res.data.data.data.blogImage);
+        console.log(res.data.data.data.blogImage);
         console.log(res.data);
       } catch (error) {
         console.log(error);
@@ -43,7 +44,6 @@ function Details() {
     fetchBlogById();
   }, [id]);
 
-  
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -70,14 +70,12 @@ function Details() {
     }
   };
 
-
   const handleImageChange = (e) => {
     setBlog({
       ...blog,
       blogImage: e.target.files[0],
     });
   };
-
 
   const handleDelete = async (e) => {
     e.preventDefault();
@@ -109,9 +107,9 @@ function Details() {
         <div class="container">
           <div class="row">
             <div class="col-md-3">
-              <a href="index.html" class="btn btn-light btn-block">
+              <button class="btn btn-light btn-block" onClick={()=>navigate(`/`)}>
                 <i class="fas fa-arrow-left"></i> Back To Dashboard
-              </a>
+              </button>
             </div>
             <div class="col-md-3">
               <a
@@ -175,17 +173,17 @@ function Details() {
                     <div class="form-group">
                       <label htmlFor="image">Upload Image</label>
                       <img
-                                src={`http://localhost:4000/api/v1/uploads/${blog.blogImage}`}
-                              />
+                        src={`http://localhost:4000/api/v1/uploads/${blog.blogImage}`}
+                      />
                       <div class="custom-file">
                         <input
                           type="file"
                           class="custom-file-input"
                           id="image"
-                          onChange={handleImageChange}                        />
+                          onChange={handleImageChange}
+                        />
                         <label htmlFor="image" class="custom-file-label">
-                        {blogImage ? blogImage.name : "Choose File"}
-
+                          {blogImage ? blogImage.name : "Choose File"}
                         </label>
                       </div>
                       <small class="form-text text-muted">Max Size 3mb</small>

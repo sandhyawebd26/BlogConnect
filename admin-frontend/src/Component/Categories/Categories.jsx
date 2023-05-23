@@ -20,9 +20,8 @@ function Categories() {
         console.error(error);
       }
     };
-    
-    fetchBlog();
 
+    fetchBlog();
   }, []);
 
   return (
@@ -86,7 +85,7 @@ function Categories() {
                           <td>{d.createdAt.slice(0, 10)}</td>{" "}
                           <td>
                             <button
-                              onClick={() =>navigate(`/catdetails/${d._id}`)}
+                              onClick={() => navigate(`/catdetails/${d._id}`)}
                               className="btn btn-secondary"
                             >
                               <i className="fas fa-angle-double-right"></i>{" "}

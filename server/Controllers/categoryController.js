@@ -1,4 +1,4 @@
-const Category = require('../Models/category')
+const Category = require("../Models/category");
 
 // Create category
 const postAllCatController = async (req, res) => {
@@ -33,7 +33,7 @@ const getAllCatController = async (req, res) => {
     res.status(200).json({
       success: true,
       categories: categories,
-      numberOfCategories: categories.length
+      numberOfCategories: categories.length,
     });
   } catch (error) {
     console.error(error);
@@ -46,7 +46,7 @@ const getAllCatController = async (req, res) => {
 
 //Get category by Id
 
-const getCatByIdController= async (req, res) => {
+const getCatByIdController = async (req, res) => {
   const { id } = req.params; // Get the category ID from the URL path
 
   try {
@@ -55,7 +55,6 @@ const getCatByIdController= async (req, res) => {
       return res.status(404).json({
         success: false,
         error: "Category not found",
-        
       });
     }
     res.status(200).json({
@@ -119,5 +118,5 @@ module.exports = {
   getAllCatController,
   updateCatController,
   deleteCatController,
-  getCatByIdController
+  getCatByIdController,
 };

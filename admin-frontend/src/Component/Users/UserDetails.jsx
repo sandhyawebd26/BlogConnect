@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
 
 function UserDetails() {
+  const navigate= useNavigate();
+
     const [user, setUser]=useState("");
     const {id}= useParams();
 
@@ -70,9 +72,9 @@ function UserDetails() {
         <div class="container">
           <div class="row">
             <div class="col-md-3">
-              <a href="index.html" class="btn btn-light btn-block">
+              <button class="btn btn-light btn-block" onClick={()=>navigate(`/`)}>
                 <i class="fas fa-arrow-left"></i> Back To Dashboard
-              </a>
+              </button>
             </div>
             <div class="col-md-3">
               <button class="btn btn-success btn-block" onClick={handleUserUpdate}>
